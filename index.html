@@ -4,17 +4,717 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hospitality + Mixed-Use Investment Directory</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1F4E78;
+            --secondary: #2E5C8A;
+            --accent: #D4AF37;
+            --light-bg: #F9F7F4;
+            --dark-bg: #0F1419;
+            --text-dark: #1a1a1a;
+            --text-light: #ffffff;
+            --card-bg: #ffffff;
+            --border: #E5E5E5;
+            --hover: #f0f0f0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f5f3f0 0%, #e8e4df 100%);
+            color: var(--text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 12px;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #666;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .divider {
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            margin: 20px auto;
+        }
+
+        .section {
+            margin-bottom: 50px;
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .section:nth-child(1) { animation-delay: 0.1s; }
+        .section:nth-child(2) { animation-delay: 0.2s; }
+        .section:nth-child(3) { animation-delay: 0.3s; }
+        .section:nth-child(4) { animation-delay: 0.4s; }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 25px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--accent);
+            display: inline-block;
+        }
+
+        .company-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .company-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 24px;
+            border: 1px solid var(--border);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .company-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .company-card:hover::before {
+            left: 100%;
+        }
+
+        .company-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 8px 32px rgba(31, 78, 120, 0.12);
+            transform: translateY(-4px);
+        }
+
+        .company-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .company-icon {
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+
+        .company-meta {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(31, 78, 120, 0.08);
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .company-desc {
+            font-size: 0.95rem;
+            color: #555;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .company-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .company-link::after {
+            content: '→';
+            transition: transform 0.3s ease;
+        }
+
+        .company-link:hover {
+            color: var(--accent);
+            background: rgba(31, 78, 120, 0.05);
+        }
+
+        .company-link:hover::after {
+            transform: translateX(4px);
+        }
+
+        .category-intro {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 25px;
+            padding: 12px 0;
+            border-left: 3px solid var(--accent);
+            padding-left: 16px;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 80px;
+            padding-top: 40px;
+            border-top: 1px solid var(--border);
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .thesis {
+            background: linear-gradient(135deg, rgba(31, 78, 120, 0.05), rgba(212, 175, 55, 0.05));
+            border: 1px solid rgba(31, 78, 120, 0.1);
+            border-left: 3px solid var(--accent);
+            padding: 28px;
+            border-radius: 8px;
+            margin: 60px 0;
+            animation: fadeInUp 0.8s ease-out 0.5s forwards;
+            opacity: 0;
+        }
+
+        .thesis-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+
+        .thesis-text {
+            color: #555;
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .company-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Hospitality + Mixed-Use Investment Directory</h1>
-    <p>Welcome to the Hospitality + Mixed-Use Investment Directory. Here you'll find a comprehensive list of investment opportunities in the hospitality sector.</p>
-    <ul>
-        <li><a href="link1">Investment Opportunity 1</a></li>
-        <li><a href="link2">Investment Opportunity 2</a></li>
-        <li><a href="link3">Investment Opportunity 3</a></li>
-    </ul>
-    <footer>
-        <p>Last updated: 2026-04-25</p>
-    </footer>
+    <div class="container">
+        <header>
+            <h1>Investment Directory</h1>
+            <p class="subtitle">Hospitality + Mixed-Use Real Estate</p>
+            <div class="divider"></div>
+        </header>
+
+        <!-- DEVELOPERS -->
+        <section class="section">
+            <h2 class="section-title">1. DEVELOPERS</h2>
+            <p class="category-intro">Capital-intensive platforms building iconic mixed-use destinations with hotel + residential + retail integration. 5-10 year development timelines.</p>
+            
+            <div class="company-grid">
+                <div class="company-card">
+                    <div class="company-name">
+                        <span class="company-icon"></span>
+                        Cain International
+                    </div>
+                    <div class="company-meta">
+                        <span class="badge">$16B AUM</span>
+                        <span class="badge">Global</span>
+                    </div>
+                    <p class="company-desc">Premium mixed-use + branded hotels. One Beverly Hills ($5.2B). Aman partnerships.</p>
+                    <a href="https://cainint.com/investment-strategies/living-and-hospitality/" class="company-link" target="_blank">Visit Site</a>
+                </div>
+
+                <div class="company-card">
+                    <div class="company-name">
+                        <span class="company-icon"></span>
+                        Larkspur Capital
+                    </div>
+                    <div class="company-meta">
+                        <span class="badge">$1.7B</span>
+                        <span class="badge">DFW</span>
+                    </div>
+                    <p class="company-desc">Westside Village, Fort Worth. OpZone structuring. Public-private partnerships.</p>
+                    <a href="https://www.larkspurcapital.com/" class="company-link" target="_blank">Visit Site</a>
+                </div>
+
+                <div class="company-card">
+                    <div class="company-name">
+                        <span class="company-icon"></span>
+                        Trammell Crow (TCC)
+                    </div>
+                    <div class="company-meta">
+                        <span class="badge">$19.4B Pipeline</span>
+                        <span class="badge">Dallas HQ</span>
+                    </div>
+                    <p class="company-desc">Knox Street Dallas. Largest private developer. Hotel + residences + office + retail bundles.</p>
+                    <a href="https://www.trammellcrow.com/" class="company-link" target="_blank">Visit Site</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- OPERATORS -->
+        <section class="section">
+            <h2 class="section-title">2. HOSPITALITY OPERATORS</h2>
+            <p class="category-intro">Asset management + brand stewardship platforms. From founder-led boutiques to institutional mega-operators. 3-5 year repositioning.</p>
+            
+            <div class="company-grid">
+                <div class="company-card">
+                    <div class="company-name">
+                        <span class="company-icon"></span>
+                        AJ Capital Partners
+                    </div>
+                    <div class="company-meta">
+                        <span class="badge">$5.9B AUM</span>
+                        <span class="badge">Founder-Led</span>
+                    </div>
+                    <p class="company-desc">Graduate Hotels, Marine & Lawn, Field & Stream Lodge. Ben Weprin. Place-making + residentially-inspired design.</p>
+                    <a href="https://www.ajcpt.com/" class="company-link" target="_blank">Visit Site</a>
+                </div>
+
+                <div class="company-card">
+                    <div class="company-name">
+                        <span class="company-icon"></span>
+                        Aspen Hospitality
+                    </div>
+                    <div class="company-meta">
+                        <span class="badge">Luxury</span>
+                        <span class="badge">Owner-Operator</span>
+                    </div>
+                    <p class="company-desc">The Little Nell, Limelight Hotels. Mountain resort + urban expansion. Aspen Skiing Co. division.</p>
+                    <a href="https://aspenhospitality.co/" class="company-link" target="_blank">Visit Site</a>
+                </div>
+
+                <div class="company-card">
+                    <div class="company-name">
+                        <span class="company-icon"></span>
+                        Palisociety
+                    </div>
+                    <div class="company-meta">
+                        <span class="badge">Boutique</span>
+                        <span class="badge">Founder-Led</span>
+                    </div>
+                    <p class="company-desc">15+ neighborhood-centric hotels (30-100 rooms). Avi Brosh. Design-obsessed place-maker.</p>
+                    <a href="https://www.palisociety.com/" class="company-link" target="_blank">Visit Site</a>
+                </div>
+
+                <div class="company-card">
+                    <div class="company-name">
+                        <span class="company-icon"></span>
+                        Highgate
+                    </div>
+                    <div class="company-meta">
+                        <span class="badge">$25B+ AUM</span>
+                        <span class="badge">500+ Hotels</span>
+                    </div>
+                    <p class="company-desc">Institutional operator. Full-service, lifestyle, luxury. Development arm included.</p>
+                    <a href="https://www.highgate.com/portfolio/" class="company-link" target="_blank">Visit Site</a>
+                </div>
+
+                <div class="company-card">
+                    <div class="company-name">
+                        <span class="company-icon"></span>
+                        AimBridge
+                    </div>
+                    <div class="company-meta">
+                        <span class="badge">$20B+ AUM</span>
+                        <span class="badge">Asset-Light</span>
+                    </div>
+                    <p class="company-desc">3rd-party operator. 400+ hotels. Fee-based model (8-12% revenue). Multi-flag expertise.</p>
+                    <a href="https://www.aimbridgehospitality.com/" class="company-link" target="_blank">Visit Site</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- CAPITAL PLATFORMS -->
+        <section class="section">
+            <h2 class="section-title">3. CAPITAL PLATFORMS</h2>
+            <p class="category-intro">Institutional investment + portfolio management. Patient capital focused on hospitality as place-making. 7-15 year horizons.</p>
+            
+            <div class="company-grid">
+                <div class="company-card">
+                    <div class="company-name">
+                        <span class="company-icon"></span>
+                        VICI Properties
+                    </div>
+                    <div class="company-meta">
+                        <span class="badge">NYSE: VICI</span>
+                        <span class="badge">$100B+ AUM</span>
+                    </div>
+                    <p class="company-desc">Hospitality REIT. $300M mezzanine in One Beverly Hills (Cain).</p>
+                    <a href="https://viciproperties.com/" class="company-link" target="_blank">Visit Site</a>
+                </div>
+
+                <div class="company-card">
+                    <div class="company-name">
+                        <span class="company-icon"></span>
+                        HEI Hotels & Resorts
+                    </div>
+                    <div class="company-meta">
+                        <span class="badge">$15B+ AUM</span>
+                        <span class="badge">300+ Hotels</span>
+                    </div>
+                    <p class="company-desc">Operator + selective equity investor. Development partnerships.</p>
+                    <a href="https://www.heihotels.com/portfolio-hei-hotels/" class="company-link" target="_blank">Visit Site</a>
+                </div>
+
+                <div class="company-card">
+                    <div class="company-name">
+                        <span class="company-icon"></span>
+                        Noble Investment
+                    </div>
+                    <div class="company-meta">
+                        <span class="badge">Mid-Market</span>
+                        <span class="badge">$50M-$500M</span>
+                    </div>
+                    <p class="company-desc">Founder-friendly growth equity. Sweet spot for boutique platforms.</p>
+                    <a href="https://www.nobleinvestment.com/" class="company-link" target="_blank">Visit Site</a>
+                </div>
+
+                <div class="company-card">
+                    <div class="company-name">
+                        <span class="company-icon"></span>
+                        Rockbridge Holdings
+                    </div>
+                    <div class="company-meta">
+                        <span class="badge">Growth Equity</span>
+                        <span class="badge">$500M-$2B</span>
+                    </div>
+                    <p class="company-desc">Hotel operators + F&B brands. Founder-friendly partnerships.</p>
+                    <a href="https://www.rockbridgeholdings.com/" class="company-link" target="_blank">Visit Site</a>
+                </div>
+
+                <div class="company-card">
+                    <div class="company-name">
+                        <span class="company-icon"></span>
+                        KSL Capital Partners
+                    </div>
+                    <div class="company-meta">
+                        <span class="badge">Hotel Investor</span>
+                        <span class="badge">Multi-Billion</span>
+                    </div>
+                    <p class="company-desc">Major hospitality investor. Equity positions in premier hotel brands and operators.</p>
+                    <a href="https://www.kslcapital.com/" class="company-link" target="_blank">Visit Site</a>
+                </div>
+
+                <div class="company-card">
+                    <div class="company-name">
+                        <span class="company-icon"></span>
+                        Sunstone Hotel Investors
+                    </div>
+                    <div class="company-meta">
+                        <span class="badge">Public REIT</span>
+                        <span class="badge">Multi-Billion</span>
+                    </div>
+                    <p class="company-desc">Upper-midscale to upscale hotels. Public equity platform. Portfolio management focus.</p>
+                    <a href="https://www.sunstonehotels.com/" class="company-link" target="_blank">Visit Site</a>
+                </div>
+
+                <div class="company-card">
+                    <div class="company-name">
+                        <span class="company-icon"></span>
+                        Extended Stay America
+                    </div>
+                    <div class="company-meta">
+                        <span class="badge">Extended-Stay</span>
+                        <span class="badge">Public Company</span>
+                    </div>
+                    <p class="company-desc">Extended-stay specialist. Different market segment. Operational excellence.</p>
+                    <a href="https://www.extendedstayamerica.com/" class="company-link" target="_blank">Visit Site</a>
+                </div>
+
+                <div class="company-card">
+                    <div class="company-name">
+                        <span class="company-icon"></span>
+                        BRE Hotels & Resorts
+                    </div>
+                    <div class="company-meta">
+                        <span class="badge">Developer-Operator</span>
+                        <span class="badge">Independent</span>
+                    </div>
+                    <p class="company-desc">Hotel development and operations. Independent operator specializing in unique properties.</p>
+                    <a href="https://www.brehotels.com/" class="company-link" target="_blank">Visit Site</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- BROKERS -->
+        <section class="section">
+            <h2 class="section-title">4. LUXURY BROKERS</h2>
+            <p class="category-intro">Transaction facilitators + market intelligence. Use to track deal flow, pricing signals, off-market access. Commission-based model.</p>
+            
+            <div class="company-grid">
+                <div class="company-card">
+                    <div class="company-name">
+                        <span class="company-icon"></span>
+                        Hilton & Hyland
+                    </div>
+                    <div class="company-meta">
+                        <span class="badge">$50B+ Sales</span>
+                        <span class="badge">Beverly Hills</span>
+                    </div>
+                    <p class="company-desc">Boutique (1 office, 90 agents). Founded 1993. Architectural specialist.</p>
+                    <a href="https://hiltonhyland.com/" class="company-link" target="_blank">Visit Site</a>
+                </div>
+
+                <div class="company-card">
+                    <div class="company-name">
+                        <span class="company-icon"></span>
+                        The Fridman Group
+                    </div>
+                    <div class="company-meta">
+                        <span class="badge">$6B+ Sales</span>
+                        <span class="badge">CA + DFW</span>
+                    </div>
+                    <p class="company-desc">Tomer Fridman. Celebrity clientele. Expanding into Dallas/Austin.</p>
+                    <a href="https://thefridmangroup.com/properties/sale" class="company-link" target="_blank">Visit Site</a>
+                </div>
+
+                <div class="company-card">
+                    <div class="company-name">
+                        <span class="company-icon"></span>
+                        Aaron Kirman Group
+                    </div>
+                    <div class="company-meta">
+                        <span class="badge">$19B+ Sales</span>
+                        <span class="badge">Founded 2022</span>
+                    </div>
+                    <p class="company-desc">Founder-launched brokerage. Record-setting transactions ($126M+).</p>
+                    <a href="https://aaronkirman.com/" class="company-link" target="_blank">Visit Site</a>
+                </div>
+
+                <div class="company-card">
+                    <div class="company-name">
+                        <span class="company-icon"></span>
+                        The Oppenheim Group
+                    </div>
+                    <div class="company-meta">
+                        <span class="badge">Multi-$B Sales</span>
+                        <span class="badge">Netflix</span>
+                    </div>
+                    <p class="company-desc">West Hollywood boutique. "Selling Sunset" fame. Emerging powerhouse.</p>
+                    <a href="https://ogroup.com/" class="company-link" target="_blank">Visit Site</a>
+                </div>
+
+                <div class="company-card">
+                    <div class="company-name">
+                        <span class="company-icon"></span>
+                        The Trump Organization
+                    </div>
+                    <div class="company-meta">
+                        <span class="badge">Luxury Developer</span>
+                        <span class="badge">Global</span>
+                    </div>
+                    <p class="company-desc">Iconic luxury hotels, resorts, residences. Trump-branded properties globally.</p>
+                    <a href="https://www.trump.com/" class="company-link" target="_blank">Visit Site</a>
+                </div>
+
+                <div class="company-card">
+                    <div class="company-name">
+                        <span class="company-icon"></span>
+                        Meriwether Companies
+                    </div>
+                    <div class="company-meta">
+                        <span class="badge">Hotel Investor</span>
+                        <span class="badge">Independent</span>
+                    </div>
+                    <p class="company-desc">Boutique hotel investment and development. Selective market focus.</p>
+                    <a href="https://www.meriwetherinvestments.com/" class="company-link" target="_blank">Visit Site</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- SKI RESORT & GOLF COURSE INVESTORS & DEVELOPERS -->
+        <section class="section">
+            <h2 class="section-title">5. SKI RESORT & GOLF COURSE INVESTORS</h2>
+            <p class="category-intro">Institutional investors and developers specializing in luxury alpine resorts, ski communities, and championship golf courses with bundled residential components.</p>
+            
+            <div class="company-grid">
+                <div class="company-card">
+                    <div class="company-name">
+                        <span class="company-icon"></span>
+                        Starwood Capital Group
+                    </div>
+                    <div class="company-meta">
+                        <span class="badge">$130B+ AUM</span>
+                        <span class="badge">Global</span>
+                    </div>
+                    <p class="company-desc">Barry Sternlicht. Field & Stream Lodge Co. (golf courses). 4,000 hotels invested. Multi-asset real estate platform.</p>
+                    <a href="https://www.starwoodcapital.com/" class="company-link" target="_blank">Visit Site</a>
+                </div>
+
+                <div class="company-card">
+                    <div class="company-name">
+                        <span class="company-icon"></span>
+                        Lone Mountain Land Company
+                    </div>
+                    <div class="company-meta">
+                        <span class="badge">Founded 2014</span>
+                        <span class="badge">Big Sky Focus</span>
+                    </div>
+                    <p class="company-desc">Formed by CrossHarbor Capital. Big Sky developer. Moonlight Basin (One&Only partnership), Yellowstone Club, Spanish Peaks.</p>
+                    <a href="https://www.moonlightbasin.com/" class="company-link" target="_blank">Visit Site</a>
+                </div>
+
+                <div class="company-card">
+                    <div class="company-name">
+                        <span class="company-icon"></span>
+                        Kerzner International
+                    </div>
+                    <div class="company-meta">
+                        <span class="badge">Dubai-Backed</span>
+                        <span class="badge">Ultra-Luxury</span>
+                    </div>
+                    <p class="company-desc">One&Only Moonlight Basin (Big Sky). Mazagan Beach & Golf Resort (Morocco, 500-room golf destination). 13+ One&Only worldwide.</p>
+                    <a href="https://www.kerzner.com/" class="company-link" target="_blank">Visit Site</a>
+                </div>
+
+                <div class="company-card">
+                    <div class="company-name">
+                        <span class="company-icon"></span>
+                        CrossHarbor Capital Partners
+                    </div>
+                    <div class="company-meta">
+                        <span class="badge">PE Fund</span>
+                        <span class="badge">$3B+ Mountain</span>
+                    </div>
+                    <p class="company-desc">Boston-based. Owns Yellowstone Club, Spanish Peaks, Montage Big Sky. Moonlight Basin developer (via LMLC).</p>
+                    <a href="https://www.crossharbor.com/" class="company-link" target="_blank">Visit Site</a>
+                </div>
+
+                <div class="company-card">
+                    <div class="company-name">
+                        <span class="company-icon"></span>
+                        AJ Capital Partners
+                    </div>
+                    <div class="company-meta">
+                        <span class="badge">$5.9B AUM</span>
+                        <span class="badge">Founder-Led</span>
+                    </div>
+                    <p class="company-desc">Ben Weprin. Marine & Lawn Hotels & Resorts (golf courses). Field & Stream Lodge Co. (with Starwood). Place-making + golf integration.</p>
+                    <a href="https://www.ajcpt.com/" class="company-link" target="_blank">Visit Site</a>
+                </div>
+
+                <div class="company-card">
+                    <div class="company-name">
+                        <span class="company-icon"></span>
+                        Discovery Land Company
+                    </div>
+                    <div class="company-meta">
+                        <span class="badge">Golf Communities</span>
+                        <span class="badge">Private</span>
+                    </div>
+                    <p class="company-desc">Tom Fazio signature golf course design + branded residences. Naples Beach Club (Four Seasons partnership). Private luxury clubs globally.</p>
+                    <a href="https://www.discoveryland.com/" class="company-link" target="_blank">Visit Site</a>
+                </div>
+
+                <div class="company-card">
+                    <div class="company-name">
+                        <span class="company-icon"></span>
+                        Extell Development Company
+                    </div>
+                    <div class="company-meta">
+                        <span class="badge">Developer</span>
+                        <span class="badge">Deer Valley</span>
+                    </div>
+                    <p class="company-desc">Developing Deer Valley East Village. Four Seasons Resort + Private Residences Deer Valley. Grand Hyatt Deer Valley anchor.</p>
+                    <a href="https://www.extelldev.com/" class="company-link" target="_blank">Visit Site</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- THESIS -->
+        <div class="thesis">
+            <div class="thesis-title">Key Thesis</div>
+            <div class="thesis-text">
+                <strong>Hospitality is evolving from a commodity asset class to a PLACE-MAKING PLATFORM.</strong> The most interesting opportunities emerge at the intersection: developers who operate, operators who develop, and capital that partners strategically. Mixed-use bundling (hotels + residences + retail + public realm) creates durable competitive advantage and defends against commoditization.
+            </div>
+        </div>
+
+        <footer>
+            <p>Hospitality + Mixed-Use Investment Directory | For Irene | April 2026</p>
+        </footer>
+    </div>
 </body>
 </html>
